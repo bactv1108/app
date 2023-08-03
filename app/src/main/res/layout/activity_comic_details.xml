@@ -51,15 +51,29 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp" />
-            <ImageView
-                android:id="@+id/imageViewComic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
             <LinearLayout
-                android:id="@+id/imageContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp" />
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center">
+            <Button
+                android:id="@+id/btn_read"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Đọc truyện"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center"/>
+            <Button
+                android:id="@+id/btn_comment"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Comment"
+                android:layout_gravity="center"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>

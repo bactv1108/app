@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment implements ComicAdapter.OnItemClickLi
     private ComicAdapter comicAdapter;
     private List<Comic> comicList;
     private ComicService comicService;
-
+    private String id_user;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -46,6 +46,12 @@ public class HomeFragment extends Fragment implements ComicAdapter.OnItemClickLi
         comicAdapter = new ComicAdapter(comicList);
         comicAdapter.setOnItemClickListener(this);
         comicsRecyclerView.setAdapter(comicAdapter);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String username = arguments.getString("username");
+            String email = arguments.getString("email");
+           id_user = arguments.getString("idUser");
+        }
 
         // Create Retrofit instance
         Retrofit retrofit = new Retrofit.Builder()
@@ -74,7 +80,6 @@ public class HomeFragment extends Fragment implements ComicAdapter.OnItemClickLi
                         List<Comic> comics = comicResponse.getData();
                         if (comics != null) {
                             for (Comic comic : comics) {
-                                // No need for deserialization, content field is already a list of strings
                                 comicList.add(comic);
                             }
                             comicAdapter.notifyDataSetChanged();
@@ -99,6 +104,7 @@ public class HomeFragment extends Fragment implements ComicAdapter.OnItemClickLi
     public void onItemClick(Comic comic) {
         Intent intent = new Intent(requireContext(), ComicDetails.class);
         intent.putExtra("comic", comic);
+        intent.putExtra("idUser",id_user);
         startActivity(intent);
     }
 }

@@ -91,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // Pass the user information as extras in the Intent
                                 intent.putExtra("username", loggedInUser.getUsername());
                                 intent.putExtra("email", loggedInUser.getEmail());
+                                intent.putExtra("idUser",loggedInUser.get_id());
 
                                 // Start the MainActivity
                                 startActivity(intent);

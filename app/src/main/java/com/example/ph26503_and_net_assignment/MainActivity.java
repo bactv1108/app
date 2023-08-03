@@ -15,6 +15,7 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity {
     private String username;
     private String email;
+    private String idUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,13 +24,14 @@ public class MainActivity extends AppCompatActivity {
         if (intent != null) {
             username = intent.getStringExtra("username");
             email = intent.getStringExtra("email");
+            idUser=intent.getStringExtra("idUser");
         }
 
         // Create a bundle to pass the user information to the HomeFragment
         Bundle bundle = new Bundle();
         bundle.putString("username", username);
         bundle.putString("email", email);
-
+        bundle.putString("idUser",idUser);
         // Create an instance of the HomeFragment and set the bundle
         HomeFragment homeFragment = new HomeFragment();
         homeFragment.setArguments(bundle);
