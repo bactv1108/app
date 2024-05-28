@@ -3,14 +3,17 @@ package com.example.ph26503_and_net_assignment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ph26503_and_net_assignment.Fragment.HomeFragment;
 import com.example.ph26503_and_net_assignment.Service.UserResponse;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.102.12:3000/api/") // Replace with your API base URL
+                .baseUrl("http://10.24.30.145:3000/api/") // Replace with your API base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -39,17 +42,25 @@ public class LoginActivity extends AppCompatActivity {
         apiService = retrofit.create(ApiSerivce.class);
 
         // Get references to the EditText fields and the login button
-        EditText usernameed = findViewById(R.id.et_username);
-        EditText passworded = findViewById(R.id.et_password);
+        TextInputLayout usernameed = findViewById(R.id.et_username);
+        TextInputLayout passworded = findViewById(R.id.et_password);
         Button loginButton = findViewById(R.id.btn_login);
+        TextView createaccount = findViewById(R.id.createaccount);
+        createaccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Set an OnClickListener for the login button
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Get the entered email and password
-                String username = usernameed.getText().toString();
-                String password = passworded.getText().toString();
+                String username = usernameed.getEditText().getText().toString();
+                String password = passworded.getEditText().getText().toString();
 
                 // Call the login function with the entered email and password
                 login(username, password);
@@ -84,14 +95,17 @@ public class LoginActivity extends AppCompatActivity {
                             }
 
                             if (isMatched) {
-                                // Username and password match
-                                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
-                                // Pass the user information as extras in the Intent
+                                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putString("currentUserId", loggedInUser.get_id()); // Replace "get_id()" with the actual ID field name
+                                editor.apply();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("username", loggedInUser.getUsername());
                                 intent.putExtra("email", loggedInUser.getEmail());
                                 intent.putExtra("idUser",loggedInUser.get_id());
+                                intent.putExtra("image",loggedInUser.getImage());
 
                                 // Start the MainActivity
                                 startActivity(intent);

@@ -66,14 +66,17 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ComicViewHol
             coverImageView = itemView.findViewById(R.id.coverImageView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
+
         }
 
         public void bind(Comic comic) {
             // Bind the comic data to the views
             // Example:
-            // coverImageView.setImageResource(comic.getCover());
+            Glide.with(itemView.getContext())
+                    .load(comic.getCover())
+                    .into(coverImageView);
             nameTextView.setText(comic.getName());
-            descriptionTextView.setText(comic.getDescription());
+            descriptionTextView.setText("By "+comic.getAuthor());
         }
     }
 }

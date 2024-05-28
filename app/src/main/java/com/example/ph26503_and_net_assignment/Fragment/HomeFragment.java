@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.ph26503_and_net_assignment.Comic;
 import com.example.ph26503_and_net_assignment.ComicAdapter;
 import com.example.ph26503_and_net_assignment.ComicDetails;
@@ -37,6 +39,8 @@ public class HomeFragment extends Fragment implements ComicAdapter.OnItemClickLi
     private List<Comic> comicList;
     private ComicService comicService;
     private String id_user;
+    private TextView tv_hello;
+    private ImageView img_avatarhome;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -44,6 +48,8 @@ public class HomeFragment extends Fragment implements ComicAdapter.OnItemClickLi
         comicsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         comicList = new ArrayList<>();
         comicAdapter = new ComicAdapter(comicList);
+        tv_hello=view.findViewById(R.id.tv_hello);
+        img_avatarhome=view.findViewById(R.id.img_avatarhome);
         comicAdapter.setOnItemClickListener(this);
         comicsRecyclerView.setAdapter(comicAdapter);
         Bundle arguments = getArguments();
@@ -51,11 +57,16 @@ public class HomeFragment extends Fragment implements ComicAdapter.OnItemClickLi
             String username = arguments.getString("username");
             String email = arguments.getString("email");
            id_user = arguments.getString("idUser");
+           String imagehome=arguments.getString("image");
+           tv_hello.setText("Hello, "+username);
+            Glide.with(this)
+                    .load(imagehome).circleCrop()
+                    .into(img_avatarhome);
         }
 
         // Create Retrofit instance
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.102.12:3000/api/")
+                .baseUrl("http://10.24.30.145:3000/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
